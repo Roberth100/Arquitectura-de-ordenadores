@@ -1,0 +1,351 @@
+E--Trabajo de la UNL VHDL.
+-- DEMO 01
+
+library ieee;
+use ieee.std_logic_1164.all;
+use work.std_arith.all;
+
+entity Sumador is
+port(
+ A, B: in std_logic_vector(0 to 1);
+    SUMA: out std_logic_vector(0 to 1);
+);
+end Sumador;
+
+------------------------------------------------
+--Trabajo de la UNL VHDL.
+-- DEMO 01
+
+entity Tabla is
+port( A, B, C: in bit;
+    F0, F1: out bit):
+end Tabla;
+
+------------------------------------------------
+-- DEMO 02
+enity Circuito is
+port (a,b,c,d,f,g,h, : in bit; F1: out bit);
+end Circuito;
+------------------------------------------------
+--Demo 04
+--Referente a la integración de módulos.
+entity Proyecto is
+port (A3, A2, A1, A0, B3, B2, B2, B0: in bit;
+C3, C2, C1, C0: inout bit;
+S3,S2,S1 ,S0: out bit);
+end Proyecto;
+------------------------------------------------
+--ejercicios de la UNL
+--Demo Vectores
+
+entity Proyecto is
+port (A,B, : in bit_vector (3 downto 0);  C: inout bit_vector(3 downto 0); S: out bit_vector (3 downto 0));
+end Proyecto;
+------------------------------------------------
+--Ejercicio de Vector diapo 10
+entity Control is
+port (Q: in bit_vector (3 downto 0); F: out bit_vector (0 to 7));
+end Control;
+------------------------------------------------
+--Ejercicio de Vector diapo 12
+library ieee;
+--formato de librería
+--use nombre_libreria.nombrepaquete.all;
+use ieee.std_logic_1164.all;
+entity Bloque is
+port (X: in std_logic_vector(1 downto 0); A,B: in std_logic; Z: out std_logic_vector(0 to 3));
+end Bloque;
+
+------------------------------------------------
+
+--Ejercicio de estilo de flujo de datos
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity Tabla is
+port (A,B: in std_logic; F0, F1 : out std_logic);
+end Tabla;
+
+architecture flujo of tabla is
+begin
+	F0 <= '1' when (A='0' and B='0') else
+    	  '1' when  (A='0' and B='1') else
+          '0';
+    F1 <= '0' when (A='1' and B='1') else
+    		'1';
+end flujo
+------------------------------------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity funcional is
+port (A,B: in std_logic; c : out std_logic);
+end funcional;
+
+architecture e_funcional of funcional is
+begin
+process(A,B)
+begin
+	if A = B then
+    c<='1';
+    else c<='0';
+    end if;
+end process;
+end e_funcional;
+
+------------------------------------------------
+
+--Ejercicio de estilo Estructural
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity composicion is
+port (A,B,C: in std_logic; F : out std_logic);
+end composicion;
+
+use work.gates.all;
+
+architecture estructural of composicion is
+signal x: bit_vector(0 to 2);
+begin
+U0: and2 port map (B,C, x(0));
+
+U1: and2 port map (C,A, x(1));
+
+U2: and2 port map (A,B, x(2));
+
+U3: or3 port map (x(0), x(1), x(2),F);
+end estructural;
+
+-----------------------------------------------
+
+
+Cod Sumador
+-- Code your testbench here
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity sumador is port(A, B: in std_logic_vector (0 to 3);
+S: out std_logic_vector (0 to 3);
+Cout: out std_logic;
+end sumador;
+
+architecture arqsumador of sumador is
+signal C: stf_logic_vetor (0 to 2);
+begin
+S(0) <= A(0) xor B(0);
+C(0) <= A(0) and B(0);
+S(1) <= (A(1) xor B(1) xor C(0));
+C(1) <= (A(1) and B(1)) or (C(0) and (A(1) xor B(1)));
+S(2) <= (A(2) xor B(2) xor C(1));
+C(2) <= (A(2) and B(2)  or (C(1) and (A(2) xor B(2)));
+S(3) <= (A(3) xor B(3) xor C(2));
+Cout <= (A(3) and B(3)) or (C2) and (A(3) xor B(3)));
+end arqsumador;
+
+-----------------------------------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity ejercicio is
+port (A, B, C: in std_logic; 
+ X, Y, Z:out std_logic);
+end ejercicio;
+
+architecture arqejercicio of ejercicio is
+begin
+ X <= (not A and not B and not C) or (not A and not B and C) or (not A and B and C) or (A and B and C);
+ Y <= (not A and not B and C) or (A and not B and C) or (A and B and not C);
+ Z <= (not A and not B and not C) or (not A and B and not C) or (not A and B and C);
+end arqejercicio;
+
+X = 'A'B'C + 'A'BC +'ABC + ABC
+Y = 'A'BC + A 'BC + AB'C
+Z = 'A'B'C + 'AB'C + 'ABC 
+
+-----------------------------------------------
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity twe is
+port (a,b,c: in std_logic; f: out std_logic);
+end twe;
+
+architecture demotwe of twe is
+begin
+f <= '1' when (a='0' and b='0' and c='0') else
+'1' when (a='0' and b='1' and c='1') else
+'1' when (a='1' and b='1' and c='0') else
+'1' when (a='1' and b='1' and c='1')else '0';
+
+end demotwe;
+
+-----------------------------------------------
+
+entity twe1 is
+port (E0,E1,E2,E3 in std_logic; SELA, SELB, SELC: in std_logic; F: out std_logic);
+end twe1;
+
+architecture demotwe1 of twe1 is
+begin
+F <= E3 when SELC='1' else
+     E2 when SELB='1' else
+     E1 when SELA='1' else
+     E0;
+end demotwe1;
+
+-----------------------------------------------
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+entity decoficador is
+port(dec: in std_logic_vector(3 downto 0);
+seg: out sts_logic_vector(6 downto 0);
+end decodificador;
+architecture arq of decodificador is
+begin
+with dec select
+--- adbcdefg
+seg <= '0000001' when '0000'
+    '1001111' when '0001'
+       '0010010' when '0010'
+       '0000110' when '0011'
+       '1001100' when '0100'
+       '0100100' when '0101'
+       '1100000' when '0110'
+       '0001110' when '0111'
+       '0000000' when '1000'
+       '0000100' when '1001'
+end arq;
+
+-----------------------------------------------
+
+Declaraciones Secuencial
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+entity buf_tri_e is
+port(OE: datain: in std_logic;
+salida: buf_tri_e;
+end decodificador;
+
+architecture arq_buff of buf_tri_e is
+begin
+process(OE, datain) begin;
+if OE ='0' then
+salida <= 'Z';
+else
+salida <= datain;
+end if;
+end process;
+end arq_buff;
+
+-----------------------------------------------
+
+Declaraciones Secuencial if-then.elsif
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+
+entity entydades is
+    Port ( a,b : in  STD_LOGIC_VECTOR (3 downto 0);
+           X,Y,Z : out  STD_LOGIC );
+end entydades;
+
+architecture Behavioral of entydades is
+
+begin
+process (a,b) begin
+ if (a = b) then 
+ x <= '1';y <= '0';z <= '0'; 
+ elsif (a >  b) then
+ x <= '0';y <= '1';z <= '0' ;else
+ x <= '0';y <= '0'; z <= '1';
+ end if;
+ 
+end process; 
+ 
+end Behavioral;
+
+-----------------------------------------------
+
+Declaraciones Secuencial if-then.elif
+
+
+lentity DecodificadorBCD is
+    Port ( x : in  STD_LOGIC_VECTOR (3 downto 0);
+           d0,d1,d2,d3,d4,d5,d6,d7,d8,d9 : out  STD_LOGIC );
+end DecodificadorBCD;
+
+architecture Behavioral of DecodificadorBCD is
+
+begin
+
+ process(x)
+ 
+ begin 
+ 
+  d0 <= '1';d1 <= '1';d2 <= '1';d3 <= '1';d4 <= '1';d5 <= '1';d6 <= '1';d7 <= '1';d8 <= '1';d9 <= '1';
+  
+  if(x = "0000") then
+   d0 <= '0';
+  elsif(x = "0001") then
+   d1 <= '0';
+  elsif(x = "0010") then
+   d2 <= '0';
+  elsif(x = "0011") then
+   d3 <= '0';
+  elsif(x = "0100") then
+   d4 <= '0';
+  elsif(x = "0101") then
+   d5 <= '0';
+  elsif(x = "0110") then
+   d6 <= '0';
+  elsif(x = "0111") then
+   d7 <= '0';
+  elsif(x = "1000") then
+   d8 <= '0';
+  else
+   d9 <= '0';
+  end if;
+  
+ end process; 
+
+
+end Behavioral;
+
+
+-----------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity codificador is
+    Port ( a : in integer range 0 to 9;
+     d : out std_logic_vector(0 to 3));
+end codificador;
+
+architecture cod of codificador is
+
+begin
+process (a)
+begin
+ If a = 0 then d <= "0000";
+ elsif a = 1 then d <= "0001";
+ elsif a = 2 then d <= "0010";
+ elsif a = 3 then d <= "0011";
+ elsif a = 4 then d <= "0100";
+ elsif a = 5 then d <= "0101";
+ elsif a = 6 then d <= "0110";
+ elsif a = 7 then d <= "0111";
+ elsif a = 8 then d <= "1000";
+ else d <= "1001";
+ end if;
+end process;
+end cod;
+
